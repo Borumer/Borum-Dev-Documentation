@@ -8,9 +8,6 @@ export default function FarmsHome(props) {
 
             </Head>
 
-            <ul>
-                <li>Borum Farms API</li>
-            </ul>
         </Layout>
     );
 }

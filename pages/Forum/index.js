@@ -8,9 +8,6 @@ export default function ForumHome(props) {
 
             </Head>
 
-            <ul>
-                <li>Borum Forum API</li>
-            </ul>
         </Layout>
     );
 }

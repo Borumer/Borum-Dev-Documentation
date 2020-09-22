@@ -5,11 +5,11 @@ export default function JotHome(props) {
     return (
         <Layout {...props}>
             <Head>
-
+                <title>Borum Jot API Home</title>
             </Head>
 
             <ul>
-                <li>Borum Jot API</li>
+                <li>Documentation</li>
             </ul>
         </Layout>
     );

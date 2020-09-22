@@ -8,9 +8,6 @@ export default function FlytrapHome(props) {
 
             </Head>
 
-            <ul>
-                <li>Flytrap API</li>
-            </ul>
         </Layout>
     );
 }
