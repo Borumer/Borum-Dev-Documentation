@@ -9,7 +9,7 @@ export default function JotHome(props) {
             </Head>
 
             <ul>
-                <li>Documentation</li>
+                <li><Link href="./Documentation"><a>Documentation</a></Link></li>
             </ul>
         </Layout>
     );
