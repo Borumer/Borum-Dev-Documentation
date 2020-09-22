@@ -1,0 +1,22 @@
+{
+  "name": "borum-dev-documentation",
+  "version": "0.0.1",
+  "description": "The developer documentation for Borum API Developers",
+  "main": "index.js",
+  "dependencies": {
+    "@zeit/next-css": "^1.0.1",
+    "next": "^9.5.3",
+    "react": "^16.13.1",
+    "react-dom": "^16.13.1"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start"
+  },
+  "keywords": [],
+  "author": "Borum Technologies",
+  "license": "ISC"
+}
