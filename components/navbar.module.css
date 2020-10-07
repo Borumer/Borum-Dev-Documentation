@@ -1,5 +1,11 @@
-.list {
+.navbar {
     background-color: orange;
+}
+
+.list {
+    display: inline-flex;
+    margin: 0;
+    justify-content: flex-end;
 }
 
 .list li {
@@ -12,4 +18,9 @@
 .list li a {
     text-decoration: none;
     color: black;
+}
+
+.login {
+    border: none;
+    display: inline-flex;
 }

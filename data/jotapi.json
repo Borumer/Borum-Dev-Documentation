@@ -1,0 +1,51 @@
+{
+    "v1": [
+        {
+            "id": 1,
+            "name": "Login",
+            "path": "login",
+            "funcName": "getUser",
+            "requestMethod": "POST",
+            "requiredHeaders": [
+                {
+                    "name": "Authorization",
+                    "usage": "Basic YOUR_API_KEY"
+                }
+            ]
+        }, {
+            "id": 2,
+            "name": "Register",
+            "path": "register",
+            "funcName": "createNewUser",
+            "requestMethod": "POST",
+            "requiredHeaders": [
+                {
+                    "name": "Authorization",
+                    "usage": "Basic YOUR_API_KEY"
+                }
+            ]
+        }, {
+            "name": "Get a Task",
+            "path": "task",
+            "funcName": "getTask",
+            "requestMethod": "GET",
+            "requiredHeaders": [
+                {
+                    "name": "Authorization",
+                    "usage": "Basic YOUR_API_KEY"
+                }
+            ]
+        }, {
+            "name": "Update a Task",
+            "path": "task",
+            "funcName": "updateTask",
+            "requestMethod": "PUT",
+            "requiredHeaders": [
+                {
+                    "name": "Authorization",
+                    "usage": "Basic YOUR_API_KEY"
+                }
+            ]
+        }
+    ]
+}
