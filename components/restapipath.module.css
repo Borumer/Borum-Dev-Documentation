@@ -1,5 +1,5 @@
-.request {
-
+.restpath {
+    margin-left: 10%;
 }
 
 .requestMethod {
@@ -8,6 +8,6 @@
     padding: 0.5em;
 }
 
-.requestUrl {
-    
+.requiredHeaders .headerUsage {
+    padding-left: 30px;
 }

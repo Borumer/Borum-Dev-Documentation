@@ -13,7 +13,7 @@ export default function JotApiPath(props) {
 export async function getStaticPaths() {
     let usageInfo = await getUsageInfo("jotapi", "v1");
     usageInfo = usageInfo.map(item => {return {params: item}});
-    console.log(usageInfo);
+
     return {
         paths: usageInfo,
         fallback: false

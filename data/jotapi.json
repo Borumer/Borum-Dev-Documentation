@@ -9,7 +9,7 @@
             "requiredHeaders": [
                 {
                     "name": "Authorization",
-                    "usage": "Basic YOUR_API_KEY"
+                    "usage": "Basic USER_API_KEY"
                 }
             ]
         }, {
@@ -21,7 +21,7 @@
             "requiredHeaders": [
                 {
                     "name": "Authorization",
-                    "usage": "Basic YOUR_API_KEY"
+                    "usage": "Basic USER_API_KEY"
                 }
             ]
         }, {
@@ -32,7 +32,7 @@
             "requiredHeaders": [
                 {
                     "name": "Authorization",
-                    "usage": "Basic YOUR_API_KEY"
+                    "usage": "Basic USER_API_KEY"
                 }
             ]
         }, {
@@ -43,7 +43,62 @@
             "requiredHeaders": [
                 {
                     "name": "Authorization",
-                    "usage": "Basic YOUR_API_KEY"
+                    "usage": "Basic USER_API_KEY"
+                }
+            ]
+        }, {
+            "name": "Get a Note",
+            "path": "note",
+            "funcName": "getNote",
+            "requestMethod": "GET",
+            "requiredHeaders": [
+                {
+                    "name": "Authorization",
+                    "usage": "Basic USER_API_KEY"
+                }
+            ]
+        }, {
+            "name": "Update a Note",
+            "path": "note",
+            "funcName": "updateNote",
+            "requestMethod": "PUT",
+            "requiredHeaders": [
+                {
+                    "name": "Authorization",
+                    "usage": "Basic USER_API_KEY"
+                }
+            ]
+        }, {
+            "name": "Get all Jottings",
+            "path": "jottings",
+            "funcName": "getMyJottings",
+            "requestMethod": "GET",
+            "requiredHeaders": [
+                {
+                    "name": "Authorization",
+                    "usage": "Basic USER_API_KEY"
+                }
+            ]
+        }, {
+            "name": "Delete a Note",
+            "path": "note",
+            "funcName": "deleteNote",
+            "requestMethod": "DELETE",
+            "requiredHeaders": [
+                {
+                    "name": "Authorization",
+                    "usage": "Basic USER_API_KEY"
+                }
+            ]
+        }, {
+            "name": "Delete a Task",
+            "path": "task",
+            "funcName": "deleteTask",
+            "requestMethod": "DELETE",
+            "requiredHeaders": [
+                {
+                    "name": "Authorization",
+                    "usage": "Basic USER_API_KEY"
                 }
             ]
         }
