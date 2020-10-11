@@ -1,11 +1,18 @@
 import Layout from '../../../../components/layout';
 import RestApiPathInfo from '../../../../components/RestApiPath';
+import FunctionList from '../../../../components/FunctionList';
 import {getUsageInfo} from '../../../../lib/filesystem';
+import jotApiPath from './funcName.module.css';
 
 export default function JotApiPath(props) {
     return (
         <Layout>
-            <RestApiPathInfo {...props} version="v1" />
+            <nav className={jotApiPath.functionNav}>
+                <FunctionList activeFunc={props.currentPage.funcName} funcList={props.usageInfo} />
+            </nav>
+            <div className={jotApiPath.pathInfo}>
+                <RestApiPathInfo {...props.currentPage} version="v1" />
+            </div>
         </Layout>
     );
 }
@@ -25,7 +32,8 @@ export async function getStaticProps(context) {
     const currentPage = usageInfo.find(item => item.funcName == context.params.funcName);
     return {
         props: {
-            ...currentPage
+            usageInfo,
+            currentPage
         }
     }
 }

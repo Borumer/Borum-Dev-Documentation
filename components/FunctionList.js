@@ -1,15 +1,29 @@
-import RestApiPath from './RestApiPath';
+import Link from 'next/link';
 import functionList from './functionlist.module.css';
 
 /**
- * The list of RestApiPath's for a given version
- * @param { funcList } props 
+ * The list of REST API paths for a given version
+ * @param {Object} props
+ * @param {string} props.dirPath
+ * @param {Array} props.funcList 
+ * @param {string} props.activeFunc The name of the function that is currently being viewed 
+ * or "" if there is no "active" function
  */
-export default function FunctionList(props) {
+export default function FunctionList({ dirPath, funcList, activeFunc }) {
+    dirPath = dirPath ? dirPath.concat("/") : "";
     return (
-        <ul>
-            {props.funcList.map(item => (
-                <li><Link href={`./v1/[path].js`} as={`./v1/${item.funcName}`}><a>{item.name}</a></Link></li>
+        <ul className={functionList.functionList}>
+            {funcList.map(item => (
+                <li
+                    className={activeFunc && activeFunc == item.funcName ? functionList.active : ""}
+                >
+                    <Link 
+                        href={`./${dirPath}[path]`} 
+                        as={`./${dirPath}${item.funcName}`}
+                    >
+                        <a>{item.name}</a>
+                    </Link>
+                </li>
             ))}
         </ul>
     );

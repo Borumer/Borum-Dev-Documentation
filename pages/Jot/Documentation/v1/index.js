@@ -1,6 +1,6 @@
 import Head from 'next/head';
-import Link from 'next/link';
 import Layout from '../../../../components/layout';
+import FunctionList from '../../../../components/FunctionList';
 import {getUsageInfo} from '../../../../lib/filesystem';
 
 export default function JotV1Page(props) {
@@ -10,11 +10,7 @@ export default function JotV1Page(props) {
 
             </Head>
 
-            <ul>
-                {props.pages.map(item => (
-                <li><Link href={`./v1/[path].js`} as={`./v1/${item.funcName}`}><a>{item.name}</a></Link></li>
-                ))}
-            </ul>
+            <FunctionList dirPath="v1" funcList={props.pages} />
         </Layout>
     );
 }

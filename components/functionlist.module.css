@@ -1,0 +1,14 @@
+ul.functionList {
+    list-style-type: none;
+    line-height: 3em;
+}
+
+li.active {
+    border-right: 3px solid orange;
+}
+
+.functionList a {
+    text-decoration: none;
+    display: inline-block;
+    width: 100px;
+}

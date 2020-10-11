@@ -1,5 +1,6 @@
 import Head from "next/head";
 import Navbar from  './navbar';
+import layout from './layout.module.css';
 
 function Layout({ children }) {
   return (
@@ -11,7 +12,9 @@ function Layout({ children }) {
         </header>
 
 
-      <main>{children}</main>
+        <main className={layout.main}>{children}</main>
+
+        <footer>&copy; 2020 Borum Tech</footer>
     </div>
   );
 }

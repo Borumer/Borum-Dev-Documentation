@@ -1,5 +1,13 @@
 .restpath {
-    margin-left: 10%;
+    border: 1px solid orange;
+    border-radius: 15px;
+    margin: 1em;
+    padding: 1em;
+}
+
+.requestUrl {
+    display: flex;
+    align-items: center;
 }
 
 .requestMethod {
