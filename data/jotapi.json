@@ -1,106 +1,161 @@
 {
     "v1": [
         {
-            "id": 1,
             "name": "Login",
             "path": "login",
             "funcName": "getUser",
-            "requestMethod": "POST",
-            "requiredHeaders": [
-                {
-                    "name": "Authorization",
-                    "usage": "Basic USER_API_KEY"
+            "description": "Use login credentials to obtain necessary data to identify a user. Makes a Borum Jot account automatically if one doesn't exist",
+            "request": {
+                "method": "POST",
+                "requiredHeaders": [],
+                "body": {
+                    "email": "USER_EMAIL",
+                    "password": "USER_PASSWORD"
                 }
-            ]
+            },
+            "response": {
+                "data": {
+                    "userId": "USER_ID",
+                    "userApiKey": "USER_API_KEY"
+                }
+            }
         }, {
-            "id": 2,
             "name": "Register",
             "path": "register",
             "funcName": "createNewUser",
-            "requestMethod": "POST",
-            "requiredHeaders": [
-                {
-                    "name": "Authorization",
-                    "usage": "Basic USER_API_KEY"
+            "description": "Create a Borum account for the user",
+            "request": {
+                "method": "POST",
+                "requiredHeaders": [],
+                "body": {
+                    "first_name": "USER_FIRST_NAME",
+                    "last_name": "USER_LAST_NAME",
+                    "email": "USER_EMAIL",
+                    "password": "USER_PASSWORD"
                 }
-            ]
+            }, 
+            "response": {
+                "data": {
+                    "statusCode": "200"
+                }
+            }
         }, {
             "name": "Get a Task",
             "path": "task",
             "funcName": "getTask",
-            "requestMethod": "GET",
-            "requiredHeaders": [
-                {
-                    "name": "Authorization",
-                    "usage": "Basic USER_API_KEY"
-                }
-            ]
+            "request": {
+                "method": "GET",
+                "requiredHeaders": [
+                    {
+                        "name": "Authorization",
+                        "usage": "Basic USER_API_KEY"
+                    }
+                ]
+            }
         }, {
             "name": "Update a Task",
             "path": "task",
             "funcName": "updateTask",
-            "requestMethod": "PUT",
-            "requiredHeaders": [
-                {
-                    "name": "Authorization",
-                    "usage": "Basic USER_API_KEY"
-                }
-            ]
+            "request": {
+                "method": "PUT",
+                "requiredHeaders": [
+                    {
+                        "name": "Authorization",
+                        "usage": "Basic USER_API_KEY"
+                    }
+                ]
+            }
         }, {
             "name": "Get a Note",
             "path": "note",
             "funcName": "getNote",
-            "requestMethod": "GET",
-            "requiredHeaders": [
-                {
-                    "name": "Authorization",
-                    "usage": "Basic USER_API_KEY"
-                }
-            ]
+            "request": {
+                "method": "GET",
+                "requiredHeaders": [
+                    {
+                        "name": "Authorization",
+                        "usage": "Basic USER_API_KEY"
+                    }
+                ]
+            }
         }, {
             "name": "Update a Note",
             "path": "note",
             "funcName": "updateNote",
-            "requestMethod": "PUT",
-            "requiredHeaders": [
-                {
-                    "name": "Authorization",
-                    "usage": "Basic USER_API_KEY"
-                }
-            ]
+            "request": {
+                "method": "PUT",
+                "requiredHeaders": [
+                    {
+                        "name": "Authorization",
+                        "usage": "Basic USER_API_KEY"
+                    }
+                ]
+            }
         }, {
             "name": "Get all Jottings",
             "path": "jottings",
             "funcName": "getMyJottings",
-            "requestMethod": "GET",
-            "requiredHeaders": [
-                {
-                    "name": "Authorization",
-                    "usage": "Basic USER_API_KEY"
-                }
-            ]
+            "request": {
+                "method": "GET",
+                "requiredHeaders": [
+                    {
+                        "name": "Authorization",
+                        "usage": "Basic USER_API_KEY"
+                    }
+                ]
+            }
         }, {
             "name": "Delete a Note",
             "path": "note",
             "funcName": "deleteNote",
-            "requestMethod": "DELETE",
-            "requiredHeaders": [
-                {
-                    "name": "Authorization",
-                    "usage": "Basic USER_API_KEY"
-                }
-            ]
+            "request": {
+                "method": "DELETE",
+                "requiredHeaders": [
+                    {
+                        "name": "Authorization",
+                        "usage": "Basic USER_API_KEY"
+                    }
+                ]
+            }
         }, {
             "name": "Delete a Task",
             "path": "task",
             "funcName": "deleteTask",
-            "requestMethod": "DELETE",
-            "requiredHeaders": [
-                {
-                    "name": "Authorization",
-                    "usage": "Basic USER_API_KEY"
-                }
-            ]
+            "request": {
+                "method": "DELETE",
+                "requiredHeaders": [
+                    {
+                        "name": "Authorization",
+                        "usage": "Basic USER_API_KEY"
+                    }
+                ]
+            }
+        }, {
+            "name": "Get Subtasks",
+            "path": "subtasks",
+            "funcName": "getSubtasks",
+            "request": {
+                "method": "GET",
+                "requiredHeaders": [
+                    {
+                        "name": "Authorization",
+                        "usage": "Basic USER_API_KEY"
+                    }
+                ]
+            }
+        }, {
+            "name": "Create Subtasks",
+            "path": "subtasks",
+            "funcName": "createSubtask",
+            "request": {
+                "method": "POST",
+                "requiredHeaders": [
+                    {
+                        "name": "Authorization",
+                        "usage": "Basic USER_API_KEY"
+                    }
+                ]
+            }
         }
     ]
 }

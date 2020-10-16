@@ -1,8 +1,20 @@
 .restpath {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    grid-template-rows: 50px 1fr;
+    justify-items: flex-start;
     border: 1px solid orange;
     border-radius: 15px;
     margin: 1em;
     padding: 1em;
+}
+
+.description {
+    grid-column: 1 / -1;
+}
+
+.request {
+    grid-column: 1;
 }
 
 .requestUrl {
@@ -18,4 +30,8 @@
 
 .requiredHeaders .headerUsage {
     padding-left: 30px;
+}
+
+.response {
+    grid-column: 2;
 }
