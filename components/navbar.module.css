@@ -1,11 +1,24 @@
 .navbar {
     background-color: orange;
+    display: grid;
+    grid-template-columns: 100px 1fr auto;
+    column-gap: 5px;
+}
+
+.homeLink {
+    align-self: center;
+    justify-self: center;
+}
+
+.homeLink img {
+    height: 30px;
 }
 
 .list {
+    justify-self: flex-start;
     display: inline-flex;
     margin: 0;
-    justify-content: flex-end;
+    padding-left: 0;
 }
 
 .list li {
@@ -22,5 +35,7 @@
 
 .login {
     border: none;
-    display: inline-flex;
+    justify-self: center;
+    align-self: center;
+    margin-right: 10px;
 }

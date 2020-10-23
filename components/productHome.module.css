@@ -1,0 +1,20 @@
+.productServices {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.productServices li {
+    border: 1px solid orange;
+    border-radius: 10px;
+    list-style-type: none;
+    padding: 1em;
+    font-size: 2em;
+}
+
+.productServices li a {
+    text-decoration: none;
+}
+
+.productServices li:hover {
+    background-color: #f0f0f0;
+}

@@ -5,7 +5,9 @@ import layout from './layout.module.css';
 function Layout({ children }) {
   return (
     <div className="container">
-      <Head></Head>
+      <Head>
+        <link href="/images/favicon.ico" rel="shortcut icon" type="image/x-icon" />
+      </Head>
     
         <header>
             <Navbar />
@@ -14,7 +16,7 @@ function Layout({ children }) {
 
         <main className={layout.main}>{children}</main>
 
-        <footer>&copy; 2020 Borum Tech</footer>
+        <footer className={layout.footer}>&copy; 2020 Borum Tech</footer>
     </div>
   );
 }

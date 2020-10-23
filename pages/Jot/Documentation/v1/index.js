@@ -7,9 +7,8 @@ export default function JotV1Page(props) {
     return (
         <Layout>
             <Head>
-
+                <title>Jot Documentation Overview</title>
             </Head>
-
             <FunctionList dirPath="v1" funcList={props.pages} />
         </Layout>
     );

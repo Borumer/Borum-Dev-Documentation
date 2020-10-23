@@ -4,7 +4,14 @@ import navbar from './navbar.module.css';
 export default function Navbar() {
     return (
         <nav className={navbar.navbar}>
+            <div className={navbar.homeLink}>
+                <Link href="/">
+                    <a><img src="/images/favicon.png" /></a>
+                </Link>
+            </div>
+
             <ul className={navbar.list}>
+                
                 <li>
                     <Link href="/Jot">
                         <a>Borum Jot</a>

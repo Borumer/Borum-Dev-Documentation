@@ -3,10 +3,14 @@ import RestApiPathInfo from '../../../../components/RestApiPath';
 import FunctionList from '../../../../components/FunctionList';
 import {getUsageInfo} from '../../../../lib/filesystem';
 import jotApiPath from './funcName.module.css';
+import Head from 'next/head';
 
 export default function JotApiPath(props) {
     return (
         <Layout>
+            <Head>
+                <title>{props.currentPage.name} | Jot Docs</title>
+            </Head>
             <nav className={jotApiPath.functionNav}>
                 <FunctionList activeFunc={props.currentPage.funcName} funcList={props.usageInfo} />
             </nav>
