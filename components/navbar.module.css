@@ -33,6 +33,16 @@
     color: black;
 }
 
+@media only screen and (max-width: 680px) {
+    .list {
+        grid-column: 0;
+    }
+
+    .homeLink {
+        grid-column: 1;
+    }
+}
+
 .login {
     border: none;
     justify-self: center;

@@ -5,7 +5,7 @@ export default function RestApiPath({version, path, request, response, descripti
         <article className={restpath.restpath}>
             <p className={restpath.description}>{description ?? ""}</p>
             <RequestInfo {...{version, path}} {...request} />
-            <ResponseInfo {...{version, path}} {...response} />
+            <ResponseInfo {...{version, path}} response={response} />
         </article>
     );
 }
@@ -21,15 +21,19 @@ function RequestInfo(props) {
             <h2>Required HTTP Request Headers</h2>
             <table className={restpath.requiredHeaders}>
                 <thead>
-                    <th>Header</th>
-                    <th>Format</th>
-                </thead>
-                {props.requiredHeaders.map((item, index) => (
-                    <tr key={index}>
-                        <td className={restpath.headerName}>{item.name}</td>
-                        <td className={restpath.headerUsage}>{item.usage}</td>
+                    <tr>
+                        <th>Header</th>
+                        <th>Format</th>
                     </tr>
-                ))}
+                </thead>
+                <tbody>
+                    {props.requiredHeaders.map((item, index) => (
+                        <tr key={index}>
+                            <td className={restpath.headerName}>{item.name}</td>
+                            <td className={restpath.headerUsage}>{item.usage}</td>
+                        </tr>
+                    ))}
+                </tbody>
             </table>
             <h2>Query String</h2>
             <PrettyPrintedJSONObject json={props.queryString} />
@@ -45,35 +49,12 @@ function ResponseInfo(props) {
             <h1>Response</h1>
             <div>
                 <h2>Response Body</h2>
-                <PrettyPrintedJSONObject json={props.data} />
+                <PrettyPrintedJSONObject json={props.response} />
             </div>
         </section>
     );
 }
 
 function PrettyPrintedJSONObject({json = {}}) {
-    const syntaxHighlight = json => {
-        if (typeof json != 'string') {
-            json = JSON.stringify(json, null, 4);
-        }
-        json = json.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
-        return json.replace(/("(\\u[a-zA-Z0-9]{4}|\\[^u]|[^\\"])*"(\s*:)?|\b(true|false|null)\b|-?\d+(?:\.\d*)?(?:[eE][+\-]?\d+)?)/g, function (match) {
-            var cls = 'number';
-            if (/^"/.test(match)) {
-                if (/:$/.test(match)) {
-                    cls = 'key';
-                } else {
-                    cls = 'string';
-                }
-            } else if (/true|false/.test(match)) {
-                cls = 'boolean';
-            } else if (/null/.test(match)) {
-                cls = 'null';
-            }
-            //return '<span class="' + cls + '">' + match + '</span>';
-            return <span className={cls}>{match}</span>
-        });
-    }
-
     return <pre>{JSON.stringify(json, null, 4)}</pre>
 }

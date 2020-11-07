@@ -13,14 +13,15 @@ export default function FunctionList({ dirPath, funcList, activeFunc }) {
     dirPath = dirPath ? dirPath.concat("/") : "";
     return (
         <ul className={functionList.functionList}>
-            <li className={activeFunc && activeFunc == "Overview" ? functionList.active : ""}>
+            <li key={0} className={activeFunc && activeFunc == "Overview" ? functionList.active : ""}>
                 <Link 
                     href={`./${dirPath}Overview`}>
                         <a>Overview</a>
                 </Link>
             </li>
-            {funcList.map(item => (
+            {funcList.map((item, index) => (
                 <li
+                    key={index + 1}
                     className={activeFunc && activeFunc == item.funcName ? functionList.active : ""}
                 >
                     <Link 

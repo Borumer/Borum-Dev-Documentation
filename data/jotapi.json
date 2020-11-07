@@ -14,9 +14,12 @@
                 }
             },
             "response": {
+                "statusCode": 200,
                 "data": {
-                    "userId": "USER_ID",
-                    "userApiKey": "USER_API_KEY"
+                    "0": "USER_ID",
+                    "1": "USER_API_KEY",
+                    "jot_user_id": "USER_ID",
+                    "api_key": "USER_API_KEY"
                 }
             }
         }, {
@@ -35,22 +38,10 @@
                 }
             }, 
             "response": {
+                "statusCode": 200,
                 "data": {
-                    "statusCode": "200"
+                    "api_key": "USER_API_KEY"
                 }
-            }
-        }, {
-            "name": "Get a Task",
-            "path": "task",
-            "funcName": "getTask",
-            "request": {
-                "method": "GET",
-                "requiredHeaders": [
-                    {
-                        "name": "Authorization",
-                        "usage": "Basic USER_API_KEY"
-                    }
-                ]
             }
         }, {
             "name": "Update a Task",
@@ -63,7 +54,19 @@
                         "name": "Authorization",
                         "usage": "Basic USER_API_KEY"
                     }
-                ]
+                ],
+                "queryString": {
+                    "id": "TASK_ID",
+                    "name": "NEW_TASK_NAME",
+                    "completed": "NEW_TASK_STATUS",
+                    "priority": "NEW_TASK_PRIORITY" 
+                },
+                "body": {
+                    "body": "NEW_TASK_BODY"
+                }
+            }, 
+            "response": {
+                "statusCode": 204
             }
         }, {
             "name": "Get a Note",
@@ -76,7 +79,17 @@
                         "name": "Authorization",
                         "usage": "Basic USER_API_KEY"
                     }
-                ]
+                ],
+                "queryString": {
+                    "id": "NOTE_ID"
+                }
+            },
+            "response": {
+                "statusCode": 200,
+                "data": {
+                    "id": "NOTE_ID",
+                    "body": "DECRYPTED_NOTE_BODY"
+                }
             }
         }, {
             "name": "Update a Note",
@@ -89,18 +102,56 @@
                         "name": "Authorization",
                         "usage": "Basic USER_API_KEY"
                     }
-                ]
+                ],
+                "queryString": {
+                    "id": "NOTE_ID",
+                    "name": "NEW_NOTE_NAME",
+                    "priority": "NEW_NOTE_PRIORITY"
+                },
+                "body": {
+                    "body": "NEW_NOTE_BODY"
+                }
+            },
+            "response": {
+                "statusCode": 204
             }
         }, {
             "name": "Get all Jottings",
             "path": "jottings",
             "funcName": "getMyJottings",
+            "description": "Get all jottings that a user owns, including notes and tasks, and return in one huge array, distinguished by the source property",
             "request": {
                 "method": "GET",
                 "requiredHeaders": [
                     {
                         "name": "Authorization",
                         "usage": "Basic USER_API_KEY"
+                    }
+                ]
+            },
+            "response": {
+                "statusCode": 200,
+                "data": [
+                    {
+                        "id": "NOTE_ID",
+                        "title": "NOTE_TITLE",
+                        "body": "NULL",
+                        "user_id": "NOTE_USER_ID",
+                        "completed": "NULL",
+                        "time_updated": "NOTE_TIME_UPDATED",
+                        "parent_id": 0,
+                        "priority": "NOTE_PRIORITY",
+                        "source": "note"
+                    }, {
+                        "id": "TASK_ID",
+                        "title": "TASK_TITLE",
+                        "body": "TASK_BODY",
+                        "user_id": "TASK_USER_ID",
+                        "completed": "TASK_STATUS",
+                        "time_updated": "TASK_TIME_UPDATED",
+                        "parent_id": "TASK_PARENT_ID",
+                        "priority": "TASK_PRIORITY",
+                        "source": "task"
                     }
                 ]
             }
@@ -155,6 +206,26 @@
                         "usage": "Basic USER_API_KEY"
                     }
                 ]
+            }
+        }, {
+            "name": "Share a Note",
+            "path": "note/share",
+            "funcName": "shareNote",
+            "request": {
+                "method": "POST",
+                "requiredHeaders": [
+                    {
+                        "name": "Authorization",
+                        "usage": "Basic USER_API_KEY"
+                    }
+                ],
+                "body": {
+                    "id": "NOTE_ID",
+                    "email": "RECIPIENT_EMAIL"
+                }
+            }, 
+            "response": {
+                "statusCode": 204
             }
         }
     ]

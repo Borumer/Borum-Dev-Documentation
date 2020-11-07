@@ -1,37 +1,58 @@
 .restpath {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    grid-template-rows: 50px 1fr;
-    justify-items: flex-start;
-    border: 1px solid orange;
-    border-radius: 15px;
-    margin: 1em;
-    padding: 1em;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  grid-template-rows: 50px 1fr;
+  justify-items: flex-start;
+  border: 1px solid orange;
+  border-radius: 15px;
+  margin: 1em;
+  padding: 1em;
 }
 
 .description {
-    grid-column: 1 / -1;
+  grid-column: 1 / -1;
 }
 
 .request {
-    grid-column: 1;
+  grid-column: 1;
 }
 
 .requestUrl {
-    display: flex;
-    align-items: center;
+  display: flex;
+  align-items: center;
 }
 
 .requestMethod {
-    background-color: lightgreen;
-    margin-right: 10px;
-    padding: 0.5em;
+  background-color: lightgreen;
+  margin-right: 10px;
+  padding: 0.5em;
 }
 
 .requiredHeaders .headerUsage {
-    padding-left: 30px;
+  padding-left: 30px;
 }
 
 .response {
-    grid-column: 2;
+  grid-column: 2;
+}
+
+.pre {
+  outline: 1px solid #ccc;
+  padding: 5px;
+  margin: 5px;
+}
+.string {
+  color: green;
+}
+.number {
+  color: darkorange;
+}
+.boolean {
+  color: blue;
+}
+.null {
+  color: magenta;
+}
+.key {
+  color: red;
 }
