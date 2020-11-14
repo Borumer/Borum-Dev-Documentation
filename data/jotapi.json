@@ -44,9 +44,30 @@
                 }
             }
         }, {
+            "name": "Create a Task",
+            "path": "task",
+            "funcName": "createNewTask",
+            "description": "Create a new task for a user",
+            "request": {
+                "method": "POST",
+                "requiredHeaders": [
+                    {
+                        "name": "Authorization",
+                        "usage": "Basic USER_API_KEY"
+                    }
+                ],
+                "body": {
+                    "name": "NEW_TASK_NAME"
+                }
+            },
+            "response": {
+                "statusCode": 200
+            }
+        }, {
             "name": "Update a Task",
             "path": "task",
             "funcName": "updateTask",
+            "description": "Update one or more properties of a user's task",
             "request": {
                 "method": "PUT",
                 "requiredHeaders": [
@@ -59,19 +80,41 @@
                     "id": "TASK_ID",
                     "name": "NEW_TASK_NAME",
                     "completed": "NEW_TASK_STATUS",
-                    "priority": "NEW_TASK_PRIORITY" 
+                    "priority": "NEW_TASK_PRIORITY" ,
+                    "due_date": "NEW_TASK_DUE_DATE_IN_SECONDS_SINCE_UNIX_EPOCH"
                 },
                 "body": {
                     "body": "NEW_TASK_BODY"
                 }
             }, 
             "response": {
-                "statusCode": 204
+                "statusCode": 200
+            }
+        }, {
+            "name": "Delete a Task",
+            "path": "task",
+            "funcName": "deleteTask",
+            "description": "Deletes a user's task",
+            "request": {
+                "method": "DELETE",
+                "requiredHeaders": [
+                    {
+                        "name": "Authorization",
+                        "usage": "Basic USER_API_KEY"
+                    }
+                ],
+                "body": {
+                    "id": "TASK_ID"
+                }
+            },
+            "response": {
+                "statusCode": 200
             }
         }, {
             "name": "Get a Note",
             "path": "note",
             "funcName": "getNote",
+            "description": "Get the body of a note, if the user owns the note or if the note is shared with the user",
             "request": {
                 "method": "GET",
                 "requiredHeaders": [
@@ -92,9 +135,30 @@
                 }
             }
         }, {
+            "name": "Create a Note",
+            "path": "note",
+            "funcName": "createNote",
+            "description": "Create a new note for the user",
+            "request": {
+                "method": "POST",
+                "requiredHeaders": [
+                    {
+                        "name": "Authorization",
+                        "usage": "Basic USER_API_KEY"
+                    }
+                ],
+                "body": {
+                    "name": "NEW_NOTE_NAME"
+                }
+            },
+            "response": {
+                "statusCode": 201
+            }
+        }, {
             "name": "Update a Note",
             "path": "note",
             "funcName": "updateNote",
+            "description": "Updates one or more properties of a note, if the note belongs to the user or is shared with the user",
             "request": {
                 "method": "PUT",
                 "requiredHeaders": [
@@ -105,15 +169,35 @@
                 ],
                 "queryString": {
                     "id": "NOTE_ID",
-                    "name": "NEW_NOTE_NAME",
-                    "priority": "NEW_NOTE_PRIORITY"
+                    "name": "NOTE_NEW_NAME",
+                    "priority": "NOTE_NEW_PRIORITY"
                 },
                 "body": {
-                    "body": "NEW_NOTE_BODY"
+                    "body": "NOTE_NEW_BODY"
                 }
             },
             "response": {
-                "statusCode": 204
+                "statusCode": 200
+            }
+        }, {
+            "name": "Delete a Note",
+            "path": "note",
+            "funcName": "deleteNote",
+            "description": "Deletes a user's note",
+            "request": {
+                "method": "DELETE",
+                "requiredHeaders": [
+                    {
+                        "name": "Authorization",
+                        "usage": "Basic USER_API_KEY"
+                    }
+                ],
+                "body": {
+                    "id": "NOTE_ID"
+                }
+            },
+            "response": {
+                "statusCode": 200
             }
         }, {
             "name": "Get all Jottings",
@@ -156,35 +240,10 @@
                 ]
             }
         }, {
-            "name": "Delete a Note",
-            "path": "note",
-            "funcName": "deleteNote",
-            "request": {
-                "method": "DELETE",
-                "requiredHeaders": [
-                    {
-                        "name": "Authorization",
-                        "usage": "Basic USER_API_KEY"
-                    }
-                ]
-            }
-        }, {
-            "name": "Delete a Task",
-            "path": "task",
-            "funcName": "deleteTask",
-            "request": {
-                "method": "DELETE",
-                "requiredHeaders": [
-                    {
-                        "name": "Authorization",
-                        "usage": "Basic USER_API_KEY"
-                    }
-                ]
-            }
-        }, {
             "name": "Get Subtasks",
             "path": "subtasks",
             "funcName": "getSubtasks",
+            "description": "Get the subtasks of a user's task",
             "request": {
                 "method": "GET",
                 "requiredHeaders": [
@@ -192,12 +251,27 @@
                         "name": "Authorization",
                         "usage": "Basic USER_API_KEY"
                     }
+                ],
+                "queryString": {
+                    "id": "PARENT_TASK_ID"
+                }
+            },
+            "response": {
+                "statusCode": 200,
+                "data": [
+                    {
+                        "id": "SUBTASK_TASK_ID",
+                        "title": "SUBTASK_DECRYPTED_TITLE",
+                        "body": "SUBTASK_DECRYPTED_BODY",
+                        "completed": "SUBTASK_COMPLETED_STATUS"
+                    }
                 ]
             }
         }, {
             "name": "Create Subtasks",
             "path": "subtasks",
             "funcName": "createSubtask",
+            "description": "Creates a subtask for a task or another subtask",
             "request": {
                 "method": "POST",
                 "requiredHeaders": [
@@ -205,12 +279,20 @@
                         "name": "Authorization",
                         "usage": "Basic USER_API_KEY"
                     }
-                ]
+                ],
+                "body": {
+                    "id": "PARENT_TASK_ID",
+                    "name": "NEW_SUBTASK_NAME"
+                }
+            },
+            "response": {
+                "statusCode": 200
             }
         }, {
             "name": "Share a Note",
             "path": "note/share",
             "funcName": "shareNote",
+            "description": "Gives another user access to the note",
             "request": {
                 "method": "POST",
                 "requiredHeaders": [
@@ -225,7 +307,7 @@
                 }
             }, 
             "response": {
-                "statusCode": 204
+                "statusCode": 200
             }
         }
     ]
