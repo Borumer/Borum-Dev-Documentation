@@ -18,8 +18,12 @@
                 "data": {
                     "0": "USER_ID",
                     "1": "USER_API_KEY",
+                    "2": "USER_FIRST_NAME",
+                    "3": "USER_LAST_NAME",
                     "jot_user_id": "USER_ID",
-                    "api_key": "USER_API_KEY"
+                    "api_key": "USER_API_KEY",
+                    "first_name": "USER_FIRST_NAME",
+                    "last_name": "USER_LAST_NAME"
                 }
             }
         }, {
@@ -304,6 +308,54 @@
                 "body": {
                     "id": "NOTE_ID",
                     "email": "RECIPIENT_EMAIL"
+                }
+            }, 
+            "response": {
+                "statusCode": 200
+            }
+        }, {
+            "name": "Get Note Sharees",
+            "path": "note/share",
+            "funcName": "getNoteSharees",
+            "description": "Gets the people that have access to the note with the given id",
+            "request": {
+                "method": "GET",
+                "requiredHeaders": [
+                    {
+                        "name": "Authorization",
+                        "usage": "Basic USER_API_KEY"
+                    }
+                ],
+                "queryString": {
+                    "id": "NOTE_ID"
+                }
+            },
+            "response": {
+                "statusCode": 200,
+                "data": [
+                    {
+                        "note_id": "NOTE_ID",
+                        "user_id": "SHAREE_USER_ID",
+                        "email": "SHAREE_EMAIL"
+                    }
+                ]
+            }
+        }, {
+            "name": "Remove a Sharee",
+            "path": "note/share",
+            "funcName": "removeSharee",
+            "description": "Removes the sharee with the given email, access to the given note",
+            "request": {
+                "method": "DELETE",
+                "requiredHeaders": [
+                    {
+                        "name": "Authorization",
+                        "usage":"Basic USER_API_KEY"
+                    }
+                ],
+                "body": {
+                    "id": "NOTE_ID",
+                    "email": "SHAREE_EMAIL"
                 }
             }, 
             "response": {
