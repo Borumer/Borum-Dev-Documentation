@@ -16,7 +16,7 @@ function RequestInfo(props) {
             <h1>Request</h1>
             <p className={restpath.requestUrl}>
                 <span className={restpath.requestMethod}>{props.method}</span>
-                <code>https://api.jot.bforborum.com/api/{props.version}/{props.path}</code>
+                <code>https://api.jot.borumtech.com/api/{props.version}/{props.path}</code>
             </p>
             <h2>Required HTTP Request Headers</h2>
             <table className={restpath.requiredHeaders}>
