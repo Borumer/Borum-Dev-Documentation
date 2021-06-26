@@ -1,7 +1,7 @@
 import Head from 'next/head';
 import Layout from '../../../../components/layout';
 import FunctionList from '../../../../components/FunctionList';
-import {getUsageInfo} from '../../../../lib/filesystem';
+import { loadApiSpecFile } from '../../../../lib/filesystem';
 import jotApiPath from './funcName.module.css';
 import restpath from '../../../../components/restapipath.module.css';
 
@@ -12,7 +12,7 @@ export default function JotV1PageOverview(props) {
                 <title>Jot Documentation Overview</title>
             </Head>
             <nav className={jotApiPath.functionNav}>
-                <FunctionList activeFunc="Overview" funcList={props.usageInfo} />
+                <FunctionList activeFunc="Overview" funcList={props.endpointInfo} />
             </nav>
             <div className={jotApiPath.pathInfo}>
                 <article className={restpath.restpath}>
@@ -26,11 +26,9 @@ export default function JotV1PageOverview(props) {
 }
 
 export async function getStaticProps() {
-    let usageInfo = await getUsageInfo("jotapi", "v1");
-    
-    return {
-        props: {
-            usageInfo,
-        }
-    }
+	const endpointInfo = (await loadApiSpecFile("jotapi")).resources;
+	
+	return {
+		props: { endpointInfo }
+	};
 }

@@ -14,7 +14,7 @@ export default function ProductHome(props) {
             </Head>
 
             <ul className={productHome.productServices}>
-                <li><Link href={`./${link}/Documentation/v1/Overview`}><a>Documentation</a></Link></li>
+                <li><Link href={`./${link}/Reference/v1/Overview`}><a>API Reference</a></Link></li>
             </ul>
         </Layout>
     );

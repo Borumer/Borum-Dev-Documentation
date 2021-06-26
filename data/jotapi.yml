@@ -32,7 +32,17 @@ components:
             query:
               type: string
               description: The problematic SQL query
-
+  securitySchemes:
+    UserAuthorization:
+      type: apiKey
+      in: header
+      name: Authorization
+      description: The API Key of the user to authorize the app access to their account
+    DeveloperAuthorization:
+      type: apiKey
+      in: header
+      name: X-Borum-Dev-Api-Key
+      
 paths: 
   /login:
     post:
@@ -111,8 +121,23 @@ paths:
                     type: string
                     description: API key of the user's Borum account
   /task:
-    summary: Create new task
-    description: Create a new task for a user
+    post:
+      summary: Create new task
+      description: Create a new task for a user
+      security:
+        - UserAuthorization: []
+      
+      responses:
+        '200':
+          description: OK
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GenericError'
+
+        
 #   request:
 #     method: POST
 #     requiredHeaders:

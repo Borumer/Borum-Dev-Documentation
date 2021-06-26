@@ -1,13 +1,5 @@
-import Layout from '../../components/layout';
-import Head from 'next/head';
+import ProductHome from '../../components/ProductHome';
 
 export default function FlytrapHome(props) {
-    return (
-        <Layout {...props}>
-            <Head>
-
-            </Head>
-
-        </Layout>
-    );
+    return <ProductHome name="Flytrap" />;
 }

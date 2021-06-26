@@ -1,20 +1,20 @@
 import Layout from '../../../../components/layout';
 import RestApiPathInfo from '../../../../components/RestApiPath';
 import FunctionList from '../../../../components/FunctionList';
-import {getUsageInfo} from '../../../../lib/filesystem';
-import jotApiPath from './funcName.module.css';
+import { loadApiSpecFile } from '../../../../lib/filesystem';
+import flytrapApiPath from './funcName.module.css';
 import Head from 'next/head';
 
-export default function JotApiPath(props) {
+export default function FlytrapApiPath(props) {
     return (
         <Layout>
             <Head>
-                <title>{props.currentPage.name} | Jot Docs</title>
+                <title>{props.currentPage.name} | Flytrap API Reference</title>
             </Head>
-            <nav className={jotApiPath.functionNav}>
+            <nav className={flytrapApiPath.functionNav}>
                 <FunctionList activeFunc={props.currentPage.funcName} funcList={props.usageInfo} />
             </nav>
-            <div className={jotApiPath.pathInfo}>
+            <div className={flytrapApiPath.pathInfo}>
                 <RestApiPathInfo {...props.currentPage} version="v1" />
             </div>
         </Layout>
@@ -22,8 +22,8 @@ export default function JotApiPath(props) {
 }
 
 export async function getStaticPaths() {
-    let usageInfo = await getUsageInfo("jotapi", "v1");
-    usageInfo = usageInfo.map(item => {return {params: item}});
+    let usageInfo = await loadApiSpecFile("flytrapapi", "v1");
+    usageInfo = usageInfo.map(item => {return { params: item } });
 
     return {
         paths: usageInfo,
@@ -32,8 +32,10 @@ export async function getStaticPaths() {
 }
 
 export async function getStaticProps(context) {
-    let usageInfo = await getUsageInfo("jotapi", "v1");
-    const currentPage = usageInfo.find(item => item.funcName == context.params.funcName);
+    let usageInfo = await loadApiSpecFile("flytrapapi");
+
+    const currentPage = Object.keys(usageInfo.paths).find(item => item.funcName == context.params.funcName);
+    
     return {
         props: {
             usageInfo,
