@@ -12,6 +12,8 @@ info:
 servers:
   - url: https://api.jot.borumtech.com/v1
     description: The production API server
+  - url: borum-jot-api.vercel.app
+    description: The Vercel subdomain production API server in case of any domain or Bad Gateway issues
 components:
   schemas:
     GenericError: 
