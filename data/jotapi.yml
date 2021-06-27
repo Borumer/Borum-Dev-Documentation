@@ -34,9 +34,8 @@ components:
               description: The problematic SQL query
   securitySchemes:
     UserAuthorization:
-      type: apiKey
-      in: header
-      name: Authorization
+      type: http
+      scheme: basic
       description: The API Key of the user to authorize the app access to their account
     DeveloperAuthorization:
       type: apiKey
@@ -126,15 +125,7 @@ paths:
       description: Create a new task for a user
       security:
         - UserAuthorization: []
-      requestBody:
-        content:
-          application/x-www-form-urlencoded: 
-            schema:
-              type: object
-              properties: 
-                name: 
-                  type: string
-                  description: Name of the new task
+      
       responses:
         '200':
           description: OK
@@ -145,8 +136,14 @@ paths:
               schema:
                 $ref: '#/components/schemas/GenericError'
 
-      
-#     
+        
+#   request:
+#     method: POST
+#     requiredHeaders:
+#     - name: Authorization
+#       usage: Basic USER_API_KEY
+#     body:
+#       name: NEW_TASK_NAME
 #   response:
 #     statusCode: 200
 # - name: Update a Task
