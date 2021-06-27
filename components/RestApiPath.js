@@ -1,11 +1,11 @@
 import restpath from './restapipath.module.css';
 
-export default function RestApiPath({version, path, request, response, description}) {
+export default function RestApiPath(resource) {
     return (
         <article className={restpath.restpath}>
-            <p className={restpath.description}>{description ?? ""}</p>
-            <RequestInfo {...{version, path}} {...request} />
-            <ResponseInfo {...{version, path}} response={response} />
+            <p className={restpath.description}>{resource.description ?? ""}</p>
+            <RequestInfo {...resource} />
+            <ResponseInfo {...resource} />
         </article>
     );
 }
@@ -15,8 +15,8 @@ function RequestInfo(props) {
         <section className={restpath.request}>
             <h1>Request</h1>
             <p className={restpath.requestUrl}>
-                <span className={restpath.requestMethod}>{props.method}</span>
-                <code>https://api.jot.borumtech.com/api/{props.version}/{props.path}</code>
+                <span className={restpath.requestMethod}>{props.requestMethod.toUpperCase()}</span>
+                <code>https://api.jot.borumtech.com/api/{props.version}{props.path}</code>
             </p>
             <h2>Required HTTP Request Headers</h2>
             <table className={restpath.requiredHeaders}>
@@ -27,12 +27,12 @@ function RequestInfo(props) {
                     </tr>
                 </thead>
                 <tbody>
-                    {props.requiredHeaders.map((item, index) => (
+                    {props.security ? Object.keys(props.security).map((item, index) => (
                         <tr key={index}>
-                            <td className={restpath.headerName}>{item.name}</td>
+                            <td className={restpath.headerName}>{item}</td>
                             <td className={restpath.headerUsage}>{item.usage}</td>
                         </tr>
-                    ))}
+                    )) : null}
                 </tbody>
             </table>
             <h2>Query String</h2>

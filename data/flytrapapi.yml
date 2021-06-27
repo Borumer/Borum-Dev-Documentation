@@ -1,0 +1,61 @@
+openapi: '3.0.2'
+info:
+  title: Flytrap API
+  description: The REST API for Flytrap
+  version: '1.0.0'
+  contact:
+    name: Flytrap API Support
+    email: flytrap@borumtech.com
+  license:
+    name: MIT
+    url: https://mit-license.org/
+servers:
+  - url: https://api.audio.borumtech.com/v1
+    description: The production API server
+components:
+  schemas:
+    GenericError: 
+      type: object
+      properties:
+        statusCode:
+          type: integer
+          default: 500
+        error:
+          type: object
+          properties:
+            message:
+              type: string
+              default: 'An unknown server error occurred'
+            dev:
+              type: string
+              description: The message understandable to developers (consumers of the API)
+            query:
+              type: string
+              description: The problematic SQL query
+  securitySchemes:
+    UserAuthorization:
+      type: apiKey
+      in: header
+      name: Authorization
+      description: The API Key of the user to authorize the app access to their account
+    DeveloperAuthorization:
+      type: apiKey
+      in: header
+      name: X-Borum-Dev-Api-Key
+paths:
+  /folder:
+    get:
+      responses:
+        '200':
+          description: OK
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GenericError'
+  /audio:
+    get:
+      responses:
+        '200':
+          description: OK

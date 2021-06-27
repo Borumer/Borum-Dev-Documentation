@@ -4,12 +4,11 @@
   "description": "The developer documentation for Borum API Developers",
   "main": "index.js",
   "dependencies": {
-    "@zeit/next-css": "^1.0.1",
-    "next": "^9.5.4",
-    "react": "^16.13.1",
-    "react-dom": "^16.13.1"
+    "@apidevtools/swagger-parser": "^10.0.2",
+    "next": "^11.0.1",
+    "react": "^17.0.2",
+    "react-dom": "^17.0.2"
   },
-  "devDependencies": {},
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "next -p 6100",
