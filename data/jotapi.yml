@@ -219,23 +219,46 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/GenericError'
-# - name: Get a Note
-#   path: note
-#   funcName: getNote
-#   description: Get the body of a note, if the user owns the note or if the note is
-#     shared with the user
-#   request:
-#     method: GET
-#     requiredHeaders:
-#     - name: Authorization
-#       usage: Basic USER_API_KEY
-#     queryString:
-#       id: NOTE_ID
-#   response:
-#     statusCode: 200
-#     data:
-#       id: NOTE_ID
-#       body: DECRYPTED_NOTE_BODY
+  /note:
+    get:
+      summary: Get note
+      description: Get the body of a note, if the user owns the note or if the note is
+        shared with the user
+      security:
+        - UserAuthorization: []
+      parameters:
+        - name: id
+          description: Id of the note
+          in: query
+          required: true
+          schema:
+            type: number
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  statusCode: 
+                    type: number
+                    default: 200
+                  data:
+                    type: object
+                    properties:
+                      id:
+                        type: number
+                        description: Id of the note
+                      body:
+                        type: string
+                        description: Decrypted body of the note
+              example:
+                statusCode: 200
+                data:
+                  id: 15
+                  body: John Dee was born in Mountain View, California
+              
 # - name: Create a Note
 #   path: note
 #   funcName: createNote
