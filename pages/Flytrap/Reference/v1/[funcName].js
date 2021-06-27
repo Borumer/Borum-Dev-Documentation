@@ -22,7 +22,7 @@ export default function FlytrapApiPath(props) {
 }
 
 export async function getStaticPaths() {
-    let usageInfo = await loadApiSpecFile("flytrapapi", "v1");
+    let usageInfo = await loadApiSpecFile("flytrapapi");
     usageInfo = usageInfo.map(item => {return { params: item } });
 
     return {
