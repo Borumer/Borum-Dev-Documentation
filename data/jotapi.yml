@@ -32,9 +32,48 @@ components:
             query:
               type: string
               description: The problematic SQL query
+    Jotting:
+      type: object
+      discriminator:
+        propertyName: source
+      properties:
+        id:
+          type: number
+        title:
+          type: string
+        body:
+          type: string
+        user_id:
+          type: number
+        status:
+          type: number
+        time_updated:
+          type: number
+          description: Time updated in seconds since Unix epoch
+        source:
+          type: string
+      required:
+        - title
+        - source
+    Task:
+      description: A representation of a task
+      allOf:
+        - $ref: '#/components/schemas/Jotting'
+        - type: object
+          properties:
+            parent_id: 
+              type: number
+              description: The id of the parent task if it is a subtask, or 0 if it is a top-level task
+      required:
+        - parent_id
+    Note:
+      description: A representation of a note
+      allOf:
+        - $ref: '#/components/schemas/Jotting'
+
   responses:
     SuccessfulOperationWithoutData:
-      description: 204 No Content response
+      description: (No Content) Operation successful
         
   securitySchemes:
     UserAuthorization:
@@ -51,7 +90,10 @@ paths:
   /login:
     post:
       summary: Fetch a user
+      operationId: getUser
       description: Use login credentials to obtain necessary data to identify a user and makes a Borum Jot account automatically if one doesn't exist
+      tags:
+        - Account
       requestBody:
         content:
           application/x-www-form-urlencoded:
@@ -94,7 +136,10 @@ paths:
   /register:
     post:
       summary: Create a new user  
+      operationId: createNewUser
       description: Create a Borum account for the user
+      tags:
+        - Account
       requestBody:
         content:
           application/x-www-form-urlencoded:
@@ -127,7 +172,10 @@ paths:
   /task:
     post:
       summary: Create a new task
+      operationId: createNewTask
       description: Create a new task for a user
+      tags:
+        - task
       security:
         - UserAuthorization: []
       requestBody:
@@ -149,8 +197,11 @@ paths:
               schema:
                 $ref: '#/components/schemas/GenericError'
     put:
-      summary: Update a task
+      summary: Updates a task
+      operationId: updateTask
       description: Update one or more properties of a user's task
+      tags:
+        - task
       security:
         - UserAuthorization: []
       parameters:
@@ -204,7 +255,10 @@ paths:
                 $ref: '#/components/schemas/GenericError' 
     delete:
       summary: Delete a task
+      operationId: deleteTask
       description: Deletes a user's task
+      tags: 
+        - task
       security:
         - UserAuthorization: []
       parameters:
@@ -225,9 +279,12 @@ paths:
                 $ref: '#/components/schemas/GenericError'
   /note:
     get:
-      summary: Get a note
+      summary: Get a Note
+      operationId: getNote
       description: Get the body of a note, if the user owns the note or if the note is
         shared with the user
+      tags:
+        - note
       security:
         - UserAuthorization: []
       parameters:
@@ -249,23 +306,18 @@ paths:
                     type: number
                     default: 200
                   data:
-                    type: object
-                    properties:
-                      id:
-                        type: number
-                        description: Id of the note
-                      body:
-                        type: string
-                        description: Decrypted body of the note
+                    $ref: '#/components/schemas/Task'
               example:
                 statusCode: 200
                 data:
                   id: 15
                   body: John Dee was born in Mountain View, California
-              
     post: 
       summary: Create a note
+      operationId: createNote
       description: Create a new note for the user
+      tags:
+        - note
       security:
         - UserAuthorization: []
       requestBody:
@@ -281,7 +333,10 @@ paths:
           description: Note successfully created
     put:
       summary: Update a note
+      operationId: updateNote
       description: Updates one or more properties of a note, if the note belongs to the user or is shared with the user
+      tags:
+        - note
       security: 
         - UserAuthorization: []
       parameters:
@@ -291,19 +346,16 @@ paths:
           in: query
           schema: 
             type: number
-          
         - name: name
           description: New name of the note
           in: query
           schema:
             type: string
-        
         - name: priority
           description: New priority of the note
           in: query
           schema:
             type: number
-            
       requestBody:
         content:
           application/x-www-form-urlencoded:
@@ -314,128 +366,220 @@ paths:
       responses:
         '204':
           $ref: "#/components/responses/SuccessfulOperationWithoutData"
-#   response:
-#     statusCode: 200
-# - name: Delete a Note
-#   path: note
-#   funcName: deleteNote
-#   description: Deletes a user's note
-#   request:
-#     method: DELETE
-#     requiredHeaders:
-#     - name: Authorization
-#       usage: Basic USER_API_KEY
-#     body:
-#       id: NOTE_ID
-#   response:
-#     statusCode: 200
-# - name: Get all Jottings
-#   path: jottings
-#   funcName: getMyJottings
-#   description: Get all jottings that a user owns, including notes and tasks, and return
-#     in one huge array, distinguished by the source property
-#   request:
-#     method: GET
-#     requiredHeaders:
-#     - name: Authorization
-#       usage: Basic USER_API_KEY
-#   response:
-#     statusCode: 200
-#     data:
-#     - id: NOTE_ID
-#       title: NOTE_TITLE
-#       body: 'NULL'
-#       user_id: NOTE_USER_ID
-#       completed: 'NULL'
-#       time_updated: NOTE_TIME_UPDATED
-#       parent_id: 0
-#       priority: NOTE_PRIORITY
-#       source: note
-#     - id: TASK_ID
-#       title: TASK_TITLE
-#       body: TASK_BODY
-#       user_id: TASK_USER_ID
-#       completed: TASK_STATUS
-#       time_updated: TASK_TIME_UPDATED
-#       parent_id: TASK_PARENT_ID
-#       priority: TASK_PRIORITY
-#       source: task
-# - name: Get Subtasks
-#   path: subtasks
-#   funcName: getSubtasks
-#   description: Get the subtasks of a user's task
-#   request:
-#     method: GET
-#     requiredHeaders:
-#     - name: Authorization
-#       usage: Basic USER_API_KEY
-#     queryString:
-#       id: PARENT_TASK_ID
-#   response:
-#     statusCode: 200
-#     data:
-#     - id: SUBTASK_TASK_ID
-#       title: SUBTASK_DECRYPTED_TITLE
-#       body: SUBTASK_DECRYPTED_BODY
-#       completed: SUBTASK_COMPLETED_STATUS
-# - name: Create Subtasks
-#   path: subtasks
-#   funcName: createSubtask
-#   description: Creates a subtask for a task or another subtask
-#   request:
-#     method: POST
-#     requiredHeaders:
-#     - name: Authorization
-#       usage: Basic USER_API_KEY
-#     body:
-#       id: PARENT_TASK_ID
-#       name: NEW_SUBTASK_NAME
-#   response:
-#     statusCode: 200
-# - name: Share a Note
-#   path: note/share
-#   funcName: shareNote
-#   description: Gives another user access to the note
-#   request:
-#     method: POST
-#     requiredHeaders:
-#     - name: Authorization
-#       usage: Basic USER_API_KEY
-#     body:
-#       id: NOTE_ID
-#       email: RECIPIENT_EMAIL
-#   response:
-#     statusCode: 200
-# - name: Get Note Sharees
-#   path: note/share
-#   funcName: getNoteSharees
-#   description: Gets the people that have access to the note with the given id
-#   request:
-#     method: GET
-#     requiredHeaders:
-#     - name: Authorization
-#       usage: Basic USER_API_KEY
-#     queryString:
-#       id: NOTE_ID
-#   response:
-#     statusCode: 200
-#     data:
-#     - note_id: NOTE_ID
-#       user_id: SHAREE_USER_ID
-#       email: SHAREE_EMAIL
-# - name: Remove a Sharee
-#   path: note/share
-#   funcName: removeSharee
-#   description: Removes the sharee with the given email, access to the given note
-#   request:
-#     method: DELETE
-#     requiredHeaders:
-#     - name: Authorization
-#       usage: Basic USER_API_KEY
-#     body:
-#       id: NOTE_ID
-#       email: SHAREE_EMAIL
-#   response:
-#     statusCode: 200
-
-# }
+    delete:
+      summary: Delete a Note
+      operationId: deleteNote
+      description: Deletes a user's note
+      tags:
+        - note
+      security:
+        - UserAuthorization: []
+      parameters:
+        - name: body
+          in: query
+          description: Id of the note
+          schema:
+            type: number
+            example: 28
+      responses:
+        '204':
+          $ref: "#/components/responses/SuccessfulOperationWithoutData"
+  /jottings:
+    get:
+      summary: Get owned jottings
+      operationId: getMyJottings
+      description: Get all jottings that a user owns, including notes and tasks, and return in one huge array, distinguished by the source property
+      tags:
+        - note
+        - task
+      security:
+        - UserAuthorization: []
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  statusCode: 
+                    type: number
+                    default: 200
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Jotting'
+              example:  
+                statusCode: 200
+                data:
+                  - id: 70
+                    title: The Life and Lies of John Dee
+                    body: John Dee was born in Mountain View, California
+                    source: note
+                  - id: 71
+                    title: Packing List
+                    body: Suntan lotion, toiletries, disposable camera, binoculars, swimming trunks
+                    source: task
+  /subtasks:
+    get:
+      summary: Get the Subtasks
+      description: Get the subtasks of a user's task
+      operationId: getSubtasks
+      tags:
+        - task
+      security:
+        - UserAuthorization: []
+      parameters:
+        - name: id
+          description: Id of the parent task
+          in: query
+          schema:
+            type: number
+          example: 30
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  statusCode: 
+                    type: number
+                    default: 200
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Task'
+              example:  
+                statusCode: 200
+                data:
+                  - id: 35
+                    title: Reserve the campsite
+                    body: Reserve the site where we'll be camping
+                    completed: 1
+                  - id: 37
+                    title: Unpack the tent
+                    body: Take everything out of the tent
+                  - id: 38
+                    title: Get a Bluetooth speaker
+                    body: This one has good reviews
+    post:
+      summary: Create a Subtask
+      operationId: createSubtask
+      description: Creates a subtask for a task or for another subtask
+      tags:
+        - task
+      security: 
+       - UserAuthorization: []
+      requestBody:
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties:
+                id: 
+                  description: Id of the parent task or parent subtask
+                name: 
+                  description: Name of the new subtask
+      responses:
+        '204':
+          $ref: '#/components/responses/SuccessfulOperationWithoutData'
+  /note/share:
+    get: 
+      summary: Get the Note Sharees
+      operationId: getNoteSharees
+      description: Gets the people that have access to the note with the given id
+      tags:
+        - note
+      security:
+        - UserAuthorization: []
+      parameters:
+        - name: id
+          description: Id of the note that is getting shared
+          in: query
+          schema:
+            type: number
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  statusCode:
+                    type: number
+                    default: 200
+                  data: 
+                    type: array
+                    items:
+                      type: object
+                      description: The list of sharees, including 
+                      properties:
+                        note_id: 
+                          type: number
+                          description: Id of the note sent in the query
+                          example: 10
+                        user_id: 
+                          type: number
+                          description: Borum user id of a sharee who has access to this note
+                        email: 
+                          type: string
+                          description: Email of the sharee with that user id
+              example:
+                statusCode: 200
+                data:
+                  - note_id: 45
+                    user_id: 189
+                    email: johndoe@gmail.com
+                  - note_id: 45
+                    user_id: 223
+                    email: janedoe@gmail.com
+                  - note_id: 45
+                    user_id: 215
+                    email: johnappleseed@gmail.com
+    post:
+      summary: Share a Note
+      operationId: shareNote
+      description: Gives another user access to the note
+      tags:
+        - note
+      security: 
+        - UserAuthorization: []
+      requestBody:
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              properties:
+                body:
+                  description: Body of the note
+                id: 
+                  description: Id of the note
+                email: 
+                  description: Email of the recipient of the note
+      responses:
+        '204':
+          $ref: '#/components/responses/SuccessfulOperationWithoutData'
+    delete:
+      summary: Remove a Sharee
+      operationId: removeSharee
+      description: Removes the sharee with the given email, access to the given note
+      tags:
+        - note
+      security:
+        - UserAuthorization: []
+      parameters:
+        - name: id
+          description: Id of the note one of whose sharee is requested to be removed
+          in: query
+          schema:
+            type: number
+        - name: email
+          description: Email of the sharee whose access is getting removed from the note
+          in: query
+          schema: 
+            type: string
+      responses:
+        '204':
+          $ref: '#/components/responses/SuccessfulOperationWithoutData'
