@@ -1,0 +1,351 @@
+openapi: '3.0.2'
+info:
+  title: Borum Jot API
+  description: The REST API for Borum Jot
+  version: '1.0.0'
+  contact:
+    name: Jot API Support
+    email: jot@borumtech.com
+  license:
+    name: MIT
+    url: https://mit-license.org/
+servers:
+  - url: https://api.jot.borumtech.com/v1
+    description: The production API server
+components:
+  schemas:
+    GenericError: 
+      type: object
+      properties:
+        statusCode:
+          type: integer
+          default: 500
+        error:
+          type: object
+          properties:
+            message:
+              type: string
+              default: 'An unknown server error occurred'
+            dev:
+              type: string
+              description: The message understandable to developers (consumers of the API)
+            query:
+              type: string
+              description: The problematic SQL query
+  securitySchemes:
+    UserAuthorization:
+      type: http
+      scheme: basic
+      description: The API Key of the user to authorize the app access to their account
+    DeveloperAuthorization:
+      type: apiKey
+      in: header
+      name: X-Borum-Dev-Api-Key
+      
+paths: 
+  /login:
+    post:
+      summary: Fetch user
+      description: Use login credentials to obtain necessary data to identify a user and makes a Borum Jot account automatically if one doesn't exist
+      requestBody:
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties:
+                email: 
+                  type: string
+                  description: Email of the user
+                password: 
+                  type: string
+                  pattern: .*
+                  description: Password of the user
+              required: 
+                - email
+                - password  
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data: 
+                    type: object
+                    properties:
+                      jot_user_id: 
+                        type: integer
+                        description: User's Borum id
+                      api_key:
+                        type: string
+                        description: User's API key
+                      first_name: 
+                        type: string
+                        description: User's first name
+                      last_name: 
+                        type: string
+                        description: User's last name
+  /register:
+    post:
+      summary: Create new user  
+      description: Create a Borum account for the user
+      requestBody:
+        content:
+          application/x-www-form-urlencoded:
+            schema: 
+              type: object
+              properties:
+                first_name: 
+                  type: string
+                  description: First name of the user
+                last_name: 
+                  type: string
+                  description: Last name of the user
+                email: 
+                  type: string
+                  description: Email of the user
+                password: 
+                  type: string
+                  description: Password of the user
+      responses:
+        '200':
+          description: 'OK'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties: 
+                  api_key: 
+                    type: string
+                    description: API key of the user's Borum account
+  /task:
+    post:
+      summary: Create new task
+      description: Create a new task for a user
+      security:
+        - UserAuthorization: []
+      
+      responses:
+        '200':
+          description: OK
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GenericError'
+
+        
+#   request:
+#     method: POST
+#     requiredHeaders:
+#     - name: Authorization
+#       usage: Basic USER_API_KEY
+#     body:
+#       name: NEW_TASK_NAME
+#   response:
+#     statusCode: 200
+# - name: Update a Task
+#   path: task
+#   funcName: updateTask
+#   description: Update one or more properties of a user's task
+#   request:
+#     method: PUT
+#     requiredHeaders:
+#     - name: Authorization
+#       usage: Basic USER_API_KEY
+#     queryString:
+#       id: TASK_ID
+#       name: NEW_TASK_NAME
+#       completed: NEW_TASK_STATUS
+#       priority: NEW_TASK_PRIORITY
+#       due_date: NEW_TASK_DUE_DATE_IN_SECONDS_SINCE_UNIX_EPOCH
+#     body:
+#       body: NEW_TASK_BODY
+#   response:
+#     statusCode: 200
+# - name: Delete a Task
+#   path: task
+#   funcName: deleteTask
+#   description: Deletes a user's task
+#   request:
+#     method: DELETE
+#     requiredHeaders:
+#     - name: Authorization
+#       usage: Basic USER_API_KEY
+#     body:
+#       id: TASK_ID
+#   response:
+#     statusCode: 200
+# - name: Get a Note
+#   path: note
+#   funcName: getNote
+#   description: Get the body of a note, if the user owns the note or if the note is
+#     shared with the user
+#   request:
+#     method: GET
+#     requiredHeaders:
+#     - name: Authorization
+#       usage: Basic USER_API_KEY
+#     queryString:
+#       id: NOTE_ID
+#   response:
+#     statusCode: 200
+#     data:
+#       id: NOTE_ID
+#       body: DECRYPTED_NOTE_BODY
+# - name: Create a Note
+#   path: note
+#   funcName: createNote
+#   description: Create a new note for the user
+#   request:
+#     method: POST
+#     requiredHeaders:
+#     - name: Authorization
+#       usage: Basic USER_API_KEY
+#     body:
+#       name: NEW_NOTE_NAME
+#   response:
+#     statusCode: 201
+# - name: Update a Note
+#   path: note
+#   funcName: updateNote
+#   description: Updates one or more properties of a note, if the note belongs to the
+#     user or is shared with the user
+#   request:
+#     method: PUT
+#     requiredHeaders:
+#     - name: Authorization
+#       usage: Basic USER_API_KEY
+#     queryString:
+#       id: NOTE_ID
+#       name: NOTE_NEW_NAME
+#       priority: NOTE_NEW_PRIORITY
+#     body:
+#       body: NOTE_NEW_BODY
+#   response:
+#     statusCode: 200
+# - name: Delete a Note
+#   path: note
+#   funcName: deleteNote
+#   description: Deletes a user's note
+#   request:
+#     method: DELETE
+#     requiredHeaders:
+#     - name: Authorization
+#       usage: Basic USER_API_KEY
+#     body:
+#       id: NOTE_ID
+#   response:
+#     statusCode: 200
+# - name: Get all Jottings
+#   path: jottings
+#   funcName: getMyJottings
+#   description: Get all jottings that a user owns, including notes and tasks, and return
+#     in one huge array, distinguished by the source property
+#   request:
+#     method: GET
+#     requiredHeaders:
+#     - name: Authorization
+#       usage: Basic USER_API_KEY
+#   response:
+#     statusCode: 200
+#     data:
+#     - id: NOTE_ID
+#       title: NOTE_TITLE
+#       body: 'NULL'
+#       user_id: NOTE_USER_ID
+#       completed: 'NULL'
+#       time_updated: NOTE_TIME_UPDATED
+#       parent_id: 0
+#       priority: NOTE_PRIORITY
+#       source: note
+#     - id: TASK_ID
+#       title: TASK_TITLE
+#       body: TASK_BODY
+#       user_id: TASK_USER_ID
+#       completed: TASK_STATUS
+#       time_updated: TASK_TIME_UPDATED
+#       parent_id: TASK_PARENT_ID
+#       priority: TASK_PRIORITY
+#       source: task
+# - name: Get Subtasks
+#   path: subtasks
+#   funcName: getSubtasks
+#   description: Get the subtasks of a user's task
+#   request:
+#     method: GET
+#     requiredHeaders:
+#     - name: Authorization
+#       usage: Basic USER_API_KEY
+#     queryString:
+#       id: PARENT_TASK_ID
+#   response:
+#     statusCode: 200
+#     data:
+#     - id: SUBTASK_TASK_ID
+#       title: SUBTASK_DECRYPTED_TITLE
+#       body: SUBTASK_DECRYPTED_BODY
+#       completed: SUBTASK_COMPLETED_STATUS
+# - name: Create Subtasks
+#   path: subtasks
+#   funcName: createSubtask
+#   description: Creates a subtask for a task or another subtask
+#   request:
+#     method: POST
+#     requiredHeaders:
+#     - name: Authorization
+#       usage: Basic USER_API_KEY
+#     body:
+#       id: PARENT_TASK_ID
+#       name: NEW_SUBTASK_NAME
+#   response:
+#     statusCode: 200
+# - name: Share a Note
+#   path: note/share
+#   funcName: shareNote
+#   description: Gives another user access to the note
+#   request:
+#     method: POST
+#     requiredHeaders:
+#     - name: Authorization
+#       usage: Basic USER_API_KEY
+#     body:
+#       id: NOTE_ID
+#       email: RECIPIENT_EMAIL
+#   response:
+#     statusCode: 200
+# - name: Get Note Sharees
+#   path: note/share
+#   funcName: getNoteSharees
+#   description: Gets the people that have access to the note with the given id
+#   request:
+#     method: GET
+#     requiredHeaders:
+#     - name: Authorization
+#       usage: Basic USER_API_KEY
+#     queryString:
+#       id: NOTE_ID
+#   response:
+#     statusCode: 200
+#     data:
+#     - note_id: NOTE_ID
+#       user_id: SHAREE_USER_ID
+#       email: SHAREE_EMAIL
+# - name: Remove a Sharee
+#   path: note/share
+#   funcName: removeSharee
+#   description: Removes the sharee with the given email, access to the given note
+#   request:
+#     method: DELETE
+#     requiredHeaders:
+#     - name: Authorization
+#       usage: Basic USER_API_KEY
+#     body:
+#       id: NOTE_ID
+#       email: SHAREE_EMAIL
+#   response:
+#     statusCode: 200
+
+# }
