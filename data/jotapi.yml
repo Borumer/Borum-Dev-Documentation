@@ -32,6 +32,10 @@ components:
             query:
               type: string
               description: The problematic SQL query
+  responses:
+    SuccessfulOperationWithoutData:
+      description: 204 No Content response
+        
   securitySchemes:
     UserAuthorization:
       type: apiKey
@@ -46,7 +50,7 @@ components:
 paths: 
   /login:
     post:
-      summary: Fetch user
+      summary: Fetch a user
       description: Use login credentials to obtain necessary data to identify a user and makes a Borum Jot account automatically if one doesn't exist
       requestBody:
         content:
@@ -89,7 +93,7 @@ paths:
                         description: User's last name
   /register:
     post:
-      summary: Create new user  
+      summary: Create a new user  
       description: Create a Borum account for the user
       requestBody:
         content:
@@ -122,7 +126,7 @@ paths:
                     description: API key of the user's Borum account
   /task:
     post:
-      summary: Create new task
+      summary: Create a new task
       description: Create a new task for a user
       security:
         - UserAuthorization: []
@@ -145,7 +149,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/GenericError'
     put:
-      summary: Update task
+      summary: Update a task
       description: Update one or more properties of a user's task
       security:
         - UserAuthorization: []
@@ -198,65 +202,118 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/GenericError' 
-# - name: Delete a Task
-#   path: task
-#   funcName: deleteTask
-#   description: Deletes a user's task
-#   request:
-#     method: DELETE
-#     requiredHeaders:
-#     - name: Authorization
-#       usage: Basic USER_API_KEY
-#     body:
-#       id: TASK_ID
-#   response:
-#     statusCode: 200
-# - name: Get a Note
-#   path: note
-#   funcName: getNote
-#   description: Get the body of a note, if the user owns the note or if the note is
-#     shared with the user
-#   request:
-#     method: GET
-#     requiredHeaders:
-#     - name: Authorization
-#       usage: Basic USER_API_KEY
-#     queryString:
-#       id: NOTE_ID
-#   response:
-#     statusCode: 200
-#     data:
-#       id: NOTE_ID
-#       body: DECRYPTED_NOTE_BODY
-# - name: Create a Note
-#   path: note
-#   funcName: createNote
-#   description: Create a new note for the user
-#   request:
-#     method: POST
-#     requiredHeaders:
-#     - name: Authorization
-#       usage: Basic USER_API_KEY
-#     body:
-#       name: NEW_NOTE_NAME
-#   response:
-#     statusCode: 201
-# - name: Update a Note
-#   path: note
-#   funcName: updateNote
-#   description: Updates one or more properties of a note, if the note belongs to the
-#     user or is shared with the user
-#   request:
-#     method: PUT
-#     requiredHeaders:
-#     - name: Authorization
-#       usage: Basic USER_API_KEY
-#     queryString:
-#       id: NOTE_ID
-#       name: NOTE_NEW_NAME
-#       priority: NOTE_NEW_PRIORITY
-#     body:
-#       body: NOTE_NEW_BODY
+    delete:
+      summary: Delete a task
+      description: Deletes a user's task
+      security:
+        - UserAuthorization: []
+      parameters:
+        - name: id 
+          description: Id of the task
+          in: query
+          required: true
+          schema:
+            type: number
+      responses:
+        '200':
+          description: OK
+        '500':
+          description: Internal server error
+          content: 
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GenericError'
+  /note:
+    get:
+      summary: Get a note
+      description: Get the body of a note, if the user owns the note or if the note is
+        shared with the user
+      security:
+        - UserAuthorization: []
+      parameters:
+        - name: id
+          description: Id of the note
+          in: query
+          required: true
+          schema:
+            type: number
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  statusCode: 
+                    type: number
+                    default: 200
+                  data:
+                    type: object
+                    properties:
+                      id:
+                        type: number
+                        description: Id of the note
+                      body:
+                        type: string
+                        description: Decrypted body of the note
+              example:
+                statusCode: 200
+                data:
+                  id: 15
+                  body: John Dee was born in Mountain View, California
+              
+    post: 
+      summary: Create a note
+      description: Create a new note for the user
+      security:
+        - UserAuthorization: []
+      requestBody:
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              properties:
+                body:
+                  type: string
+                  description: Name of the new note
+      responses:
+        '204':
+          description: Note successfully created
+    put:
+      summary: Update a note
+      description: Updates one or more properties of a note, if the note belongs to the user or is shared with the user
+      security: 
+        - UserAuthorization: []
+      parameters:
+        - name: id
+          description: Id of the note to be updated
+          required: true
+          in: query
+          schema: 
+            type: number
+          
+        - name: name
+          description: New name of the note
+          in: query
+          schema:
+            type: string
+        
+        - name: priority
+          description: New priority of the note
+          in: query
+          schema:
+            type: number
+            
+      requestBody:
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              properties:
+                body: 
+                  description: New body of the note
+      responses:
+        '204':
+          $ref: "#/components/responses/SuccessfulOperationWithoutData"
 #   response:
 #     statusCode: 200
 # - name: Delete a Note
