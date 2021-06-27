@@ -68,7 +68,8 @@ components:
         - parent_id
     Note:
       description: A representation of a note
-      $ref: '#/components/schemas/Jotting'
+      allOf:
+        - $ref: '#/components/schemas/Jotting'
 
   responses:
     SuccessfulOperationWithoutData:
@@ -394,33 +395,17 @@ paths:
                   data:
                     type: array
                     items:
-                      type: object
-                      
-                      - id: NOTE_ID
-                        title: NOTE_TITLE
-                        body:
-                          type: string
-                          description: Decrypted body of the note
-                        user_id: NOTE_USER_ID
-                        completed: 'NULL'
-                        time_updated: NOTE_TIME_UPDATED
-                        parent_id: 0
-                        priority: NOTE_PRIORITY
-                        source: note
-                      - id: TASK_ID
-                        title: TASK_TITLE
-                        body: TASK_BODY
-                        user_id: TASK_USER_ID
-                        completed: TASK_STATUS
-                        time_updated: TASK_TIME_UPDATED
-                        parent_id: TASK_PARENT_ID
-                        priority: TASK_PRIORITY
-                        source: task
+                      $ref: '#/components/schemas/Jotting'
               example:  
                 statusCode: 200
                 data:
-                  id: 15
-                  body: John Dee was born in Mountain View, California
+                  - id: 70
+                    title: The Life and Lies of John Dee
+                    body: John Dee was born in Mountain View, California
+                    source: note
+                  - id: 71
+                    title: Packing List
+                    body: Suntan lotion, toiletries, disposable camera, binoculars, swimming trunks
           
 # - name: Get Subtasks
 #   path: subtasks
