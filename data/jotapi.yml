@@ -34,8 +34,9 @@ components:
               description: The problematic SQL query
   securitySchemes:
     UserAuthorization:
-      type: http
-      scheme: basic
+      type: apiKey
+      in: header
+      name: Authorization
       description: The API Key of the user to authorize the app access to their account
     DeveloperAuthorization:
       type: apiKey
@@ -125,7 +126,15 @@ paths:
       description: Create a new task for a user
       security:
         - UserAuthorization: []
-      
+      requestBody:
+        content:
+          application/x-www-form-urlencoded: 
+            schema:
+              type: object
+              properties: 
+                name: 
+                  type: string
+                  description: Name of the new task
       responses:
         '200':
           description: OK
@@ -135,36 +144,60 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/GenericError'
-
-        
-#   request:
-#     method: POST
-#     requiredHeaders:
-#     - name: Authorization
-#       usage: Basic USER_API_KEY
-#     body:
-#       name: NEW_TASK_NAME
-#   response:
-#     statusCode: 200
-# - name: Update a Task
-#   path: task
-#   funcName: updateTask
-#   description: Update one or more properties of a user's task
-#   request:
-#     method: PUT
-#     requiredHeaders:
-#     - name: Authorization
-#       usage: Basic USER_API_KEY
-#     queryString:
-#       id: TASK_ID
-#       name: NEW_TASK_NAME
-#       completed: NEW_TASK_STATUS
-#       priority: NEW_TASK_PRIORITY
-#       due_date: NEW_TASK_DUE_DATE_IN_SECONDS_SINCE_UNIX_EPOCH
-#     body:
-#       body: NEW_TASK_BODY
-#   response:
-#     statusCode: 200
+    put:
+      summary: Update task
+      description: Update one or more properties of a user's task
+      security:
+        - UserAuthorization: []
+      parameters:
+        - name: id
+          in: query
+          description: Id of the task
+          required: true
+          schema:
+            type: number
+          
+        - name: name
+          in: query
+          description: New name of the task
+          schema:
+            type: string
+          
+        - name: completed
+          description: New status of the task (completed or incomplete represented by a 0 or 1)
+          in: query
+          schema: 
+            type: boolean
+          
+        - name: priority
+          description: New priority of the task
+          in: query
+          schema:
+            type: number
+          
+        - name: due_date
+          description: New due date of the task in seconds since Unix epoch
+          in: query
+          schema:
+            type: number
+            
+      requestBody:
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              properties:
+                body: 
+                  type: string
+                  description: New body of the tasl
+      responses:
+        '200':
+          description: OK
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GenericError' 
 # - name: Delete a Task
 #   path: task
 #   funcName: deleteTask
