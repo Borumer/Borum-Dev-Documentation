@@ -585,3 +585,10 @@ paths:
       responses:
         '204':
           $ref: '#/components/responses/SuccessfulOperationWithoutData'
+tags:
+  - name: note
+    description: Notes
+  - name: task
+    description: task-related endpoints
+  - name: Account
+    description: Account-related endpoints
