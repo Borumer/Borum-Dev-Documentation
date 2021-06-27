@@ -294,14 +294,7 @@ paths:
                     type: number
                     default: 200
                   data:
-                    type: object
-                    properties:
-                      id:
-                        type: number
-                        description: Id of the note
-                      body:
-                        type: string
-                        description: Decrypted body of the note
+                    $ref: '#/components/schemas/Task'
               example:
                 statusCode: 200
                 data:
